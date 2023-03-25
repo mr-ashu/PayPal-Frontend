@@ -1,3 +1,4 @@
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Button,
   Input,
@@ -14,10 +15,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-export const Create = (id) => {
+export const Update = (id, update) => {
   const OverlayOne = () => (
     <ModalOverlay
       bg="blackAlpha.300"
@@ -33,17 +34,7 @@ export const Create = (id) => {
   const [status, setstatus] = useState("");
   const [type, settype] = useState("");
   const { token } = useSelector((store) => store.auth);
-  const [user, setuser] = useState([]);
-  const getuser = () => {
-    axios.get(`https://paypal-u76c.onrender.com/user`).then((res) => {
-      setuser(res.data);
-      console.log(res.data);
-    });
-  };
 
-  useEffect(() => {
-    getuser();
-  }, []);
   const createtask = () => {
     const payload = {
       name: title,
@@ -53,38 +44,40 @@ export const Create = (id) => {
       type: type,
     };
 
-    if (id != "") {
-      axios
-        .post(`https://paypal-u76c.onrender.com/v/sprint/task/${id}`, payload, {
+    axios
+      .patch(
+        `https://paypal-u76c.onrender.com/v/sprint/task/${id.id}`,
+        payload,
+        {
           headers: {
             token: token,
           },
-        })
-        .then((res) => {
-          alert("sucess");
-          onClose();
-        });
-    }
+        }
+      )
+      .then((res) => {
+        alert("sucess");
+        onClose();
+        update();
+      });
   };
-
   return (
     <div>
       <Button
-        position="fixed"
-        bottom="20px"
-        right="30px"
+        width="fit-content"
+        background="none"
+        _hover={{ background: "none", color: "tomato" }}
         onClick={() => {
           setOverlay(<OverlayOne />);
           onOpen();
         }}
       >
-        Create Task
+        <EditIcon />
       </Button>
 
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         {overlay}
         <ModalContent>
-          <ModalHeader>Create Task</ModalHeader>
+          <ModalHeader>Update Task</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Input
@@ -98,26 +91,18 @@ export const Create = (id) => {
               value={desc}
               onChange={(e) => setdesc(e.target.value)}
             />
-            <Select
+            <Input
               mt="10px"
               placeholder="Assignee"
               value={assignee}
               onChange={(e) => setassignee(e.target.value)}
-            >
-              {user?.map((el) => (
-                <option value={el.name}>{el.name}</option>
-              ))}
-            </Select>
-            <Select
+            />
+            <Input
               mt="10px"
               placeholder="Status"
               value={status}
               onChange={(e) => setstatus(e.target.value)}
-            >
-              <option value="todo">Todo</option>
-              <option value="progress">Progress</option>
-              <option value="done">Done</option>
-            </Select>
+            />
             <Select
               mt="10px"
               placeholder="Type"

@@ -1,5 +1,7 @@
-import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
+import { Avatar, Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
+import axios from 'axios'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 export const Signup = () => {
     const OverlayOne = () => (
@@ -12,16 +14,38 @@ export const Signup = () => {
      
       const { isOpen, onOpen, onClose } = useDisclosure()
       const [overlay, setOverlay] = React.useState(<OverlayOne />)
+      const [name,setname]=useState("")
+      const [email,setemail]=useState("")
+      const [password,setpassword]=useState("")
+      const    store =useSelector((store)=>store.auth)
+      const signup=()=>{
+         const payload={
+          name,
+          email,
+          password
+         }
+
+         axios.post(`https://paypal-u76c.onrender.com/user/signup`,payload)
+         .then((res)=>{
+          alert("sucess")
+          onClose()
+         })
+      }
+ 
   return (
     <div>
-       <Button
-        onClick={() => {
-          setOverlay(<OverlayOne />)
-          onOpen()
-        }}
-      >
-        Sign up
-      </Button>
+      {
+        store.isAuth?<Avatar size="md"  />:(
+          <Button
+          onClick={() => {
+            setOverlay(<OverlayOne />)
+            onOpen()
+          }}
+        >
+          Sign up
+        </Button>
+        )
+      }
      
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         {overlay}
@@ -29,13 +53,13 @@ export const Signup = () => {
           <ModalHeader>Sign Up</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input placeholder='Name'/>
-             <Input mt="20px" placeholder='Email'/>
+            <Input value={name} onChange={(e)=>setname(e.target.value)} placeholder='Name'/>
+             <Input value={email} onChange={(e)=>setemail(e.target.value)} mt="20px" placeholder='Email'/>
  
-             <Input mt="20px" placeholder='Password'/>
+             <Input value={password} onChange={(e)=>setpassword(e.target.value)} mt="20px" placeholder='Password'/>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose}>Enter</Button>
+            <Button onClick={signup}>Enter</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
