@@ -1,0 +1,73 @@
+.dashboard{
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.dashboard>div{
+    width: 30%;
+    border: 1px solid gray;
+    height: 65vh;
+    text-align: left;
+}
+
+.itembtn{
+    position: fixed;
+    
+    bottom: 20px;
+    left: 50px;
+
+}
+.dashboard h3{
+    position: relative;
+    left: 10px;
+    
+}
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    margin: auto;
+    margin-bottom: 30px;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.navbar>div{
+    display: flex;
+    gap: 20px;
+}
+.navbar img{
+    width: 136px;
+    height: 43px;
+}
+
+.sprint{
+    display: flex;
+    width: 95%;
+    margin: auto;
+ 
+    margin-bottom: 20px;
+    align-items: center;
+   
+}
+
+.sprintbox{
+   
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+  
+}
+
+.sprintbox>h3{
+    color:rgb(31, 107, 153);
+    text-transform: uppercase;
+    font-weight: 500;
+}
